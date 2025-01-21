@@ -34,17 +34,17 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           {{- if .Values.secretName }}
-            envFrom:
-              - secretRef:
-                  name: {{ .Values.secretName }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.secretName }}
           {{- end }}
           {{- if .Values.springProfile }}
-             - name: SPRING_PROFILES_ACTIVE
-               value: "{{ .Values.springProfile }}"
+          - name: SPRING_PROFILES_ACTIVE
+            value: "{{ .Values.springProfile }}"
           {{- end }}
           {{- if .Values.javaOpts }}
-             - name: JAVA_OPTS
-               value: "-Xms{{ .Values.javaOpts.xms | default "512m" }} -Xmx{{ .Values.javaOpts.xmx | default "1024m" }}{{- if .Values.javaOpts.sysArgs }} {{ .Values.javaOpts.sysArgs }}{{- end }}"
+          - name: JAVA_OPTS
+            value: "-Xms{{ .Values.javaOpts.xms | default "512m" }} -Xmx{{ .Values.javaOpts.xmx | default "1024m" }}{{- if .Values.javaOpts.sysArgs }} {{ .Values.javaOpts.sysArgs }}{{- end }}"
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
