@@ -1,0 +1,29 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJVXhSdzhZTklTblF3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TXpBNU1qRXdNalV3TXpoYUZ3MHpNekE1TVRnd01qVXdNemhhTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUUNzbHBSSmdkamhvMDk2K3dzVWYxelpMRXZhMUdYbmZZbE5DY3h5TUxMbnU5UnhqbFo1dk9kSzlTTEQKd215bnZPT3lEU2xDejFZTDR1b0sxdXlRZDltVHdVVUhHZDZ5bXVDMWl2RGd4TGNRSnh1RDZrTVl6dnM4VzdTVQoxQUh1dmF6K1JJVGxCSE9XMWE5OUwyU3Jhb2RwUVBNMmZhUk1vSkNWdDRRellkVHhMVmQ4emZzSERFWjhkcEhECkEwVkxjSDl1ekgwVXFYY2M4UnNLaGY0MTA2SmJmTmpTOUdnd1BDU2NHNVhPbUE2M0I5NXRsVzNCVDAzWEFPS0gKWEhSbndKTWk3Tmg0dEFoaE0wYUVzTHZSWTJjWllmaSt2NGJzbWZrMW5FcWVyQnZDUkdIWENvSnF2WGhXRjZmZQpob3R5NzZtbFY1WWdJWWE1cHpzYzRqbW1sK1NsQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJSampLRjBQWEpOYXBBdERzbEluSHVlVWJFZkVqQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQm41bmI0NWh1TApPMDNnV1ZURzhtcU1hSzZMZXR2N2NVdHZPTlAyOURHdzZBSVJHeXBTd0cvSG5lRjdqUUlvOXNSaUU5Z1V3TWZYCmo0TTRjYXYrbjdZYlk4SjVRMUpZUDVqSFdSSDRoaTU1b3dvck12M3ppU0RTWDROLzdDM0s2aXR2REFRWEpzcDQKMDBwSHZqZTBXOXNIZmdwTWxtTlRuVFlXL1hDV25JQ1cvY1dTRDl0cWlLdUNQeitqMysyN2FTUXNyak1lSE8xZAp3cGp5YTdSRktLMUhzSmsveTNlb2hyd0VSRzQ0TzFCY1BGWkxHWStCRUk5ZkdDWjArMGtrOVdRNUVwaktjQWpVCnlPd3lQSHA3WHJpZUFIQmxBOWRLMkNkWUpUM0I0ZTV6cC9pNkdwdlY0TnlQOXMxVEIyLzF3Z29VMWpWeEp0NnEKNElNdlU4bjY0T1EyCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    server: https://A3BF17D3665715C530A793B6BF6B9E06.gr7.us-east-1.eks.amazonaws.com
+  name: arn:aws:eks:us-east-1:505753670778:cluster/stage-us-east-1-cluster-eksCluster-4bc2da2
+contexts:
+- context:
+    cluster: arn:aws:eks:us-east-1:505753670778:cluster/stage-us-east-1-cluster-eksCluster-4bc2da2
+    user: arn:aws:eks:us-east-1:505753670778:cluster/stage-us-east-1-cluster-eksCluster-4bc2da2
+  name: arn:aws:eks:us-east-1:505753670778:cluster/stage-us-east-1-cluster-eksCluster-4bc2da2
+current-context: arn:aws:eks:us-east-1:505753670778:cluster/stage-us-east-1-cluster-eksCluster-4bc2da2
+kind: Config
+preferences: {}
+users:
+- name: arn:aws:eks:us-east-1:505753670778:cluster/stage-us-east-1-cluster-eksCluster-4bc2da2
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      args:
+      - --region
+      - us-east-1
+      - eks
+      - get-token
+      - --cluster-name
+      - stage-us-east-1-cluster-eksCluster-4bc2da2
+      - --output
+      - json
+      command: aws

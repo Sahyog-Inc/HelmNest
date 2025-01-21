@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "orchestro-app.fullname" . }}
+  labels:
+    {{- include "orchestro-app.labels" . | nindent 4 }}
+spec:
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 2 }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "orchestro-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "orchestro-app.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "orchestro-app.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          {{- if .Values.secretName }}
+            envFrom:
+              - secretRef:
+                  name: {{ .Values.secretName }}
+          {{- end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.httpGet.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds | default 30 }}
+            periodSeconds:  {{ .Values.livenessProbe.periodSeconds | default 10 }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds | default 5 }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold | default 1 }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold | default 3 }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.httpGet.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds | default 30 }} # Adjust this value based on your application's startup time
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds | default 10 }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds | default 5 }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold | default 1 }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold | default 3 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
