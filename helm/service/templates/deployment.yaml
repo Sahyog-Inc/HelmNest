@@ -29,23 +29,10 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Values.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          {{- if .Values.secretName }}
-          envFrom:
-            - secretRef:
-                name: {{ .Values.secretName }}
-          {{- end }}
-          {{- if .Values.springProfile }}
-          - name: SPRING_PROFILES_ACTIVE
-            value: "{{ .Values.springProfile }}"
-          {{- end }}
-          {{- if .Values.javaOpts }}
-          - name: JAVA_OPTS
-            value: "-Xms{{ .Values.javaOpts.xms | default "512m" }} -Xmx{{ .Values.javaOpts.xmx | default "1024m" }}{{- if .Values.javaOpts.sysArgs }} {{ .Values.javaOpts.sysArgs }}{{- end }}"
-          {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -64,13 +51,32 @@ spec:
             httpGet:
               path: {{ .Values.readinessProbe.httpGet.path }}
               port: http
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds | default 30 }} # Adjust this value based on your application's startup time
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds | default 30 }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds | default 10 }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds | default 5 }}
             successThreshold: {{ .Values.readinessProbe.successThreshold | default 1 }}
             failureThreshold: {{ .Values.readinessProbe.failureThreshold | default 3 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          
+          {{- if .Values.secretName }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.secretName }}
+          {{- end }}
+
+          {{- if .Values.springProfile }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "{{ .Values.springProfile }}"
+          {{- end }}
+
+          {{- if .Values.javaOpts }}
+          env:
+            - name: JAVA_OPTS
+              value: "-Xms{{ .Values.javaOpts.xms | default "512m" }} -Xmx{{ .Values.javaOpts.xmx | default "1024m" }}{{- if .Values.javaOpts.sysArgs }} {{ .Values.javaOpts.sysArgs }}{{- end }}"
+          {{- end }}
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
