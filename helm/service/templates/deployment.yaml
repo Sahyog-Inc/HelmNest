@@ -64,6 +64,7 @@ spec:
             - secretRef:
                 name: {{ .Values.secretName }}
           {{- end }}     
+
           env:
             {{- if .Values.springProfile }}
             - name: SPRING_PROFILES_ACTIVE
@@ -74,6 +75,14 @@ spec:
             - name: JAVA_OPTS
               value: "-Xms{{ .Values.javaOpts.xms }} -Xmx{{ .Values.javaOpts.xmx }}{{- if .Values.javaOpts.sysArgs }} {{ .Values.javaOpts.sysArgs }}{{- end }}"
             {{- end }}
+            
+            {{- if .Values.env }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
+            {{- end }}
+          
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
