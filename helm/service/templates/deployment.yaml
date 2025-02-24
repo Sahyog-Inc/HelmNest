@@ -58,22 +58,21 @@ spec:
             failureThreshold: {{ .Values.readinessProbe.failureThreshold | default 3 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          
+
           {{- if .Values.secretName }}
           envFrom:
             - secretRef:
                 name: {{ .Values.secretName }}
           {{- end }}     
+
+          {{- if .Values.env }}
           env:
-            {{- if .Values.springProfile }}
-            - name: SPRING_PROFILES_ACTIVE
-              value: "{{ .Values.springProfile }}"
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
             {{- end }}
-          
-            {{- if .Values.javaOpts }}
-            - name: JAVA_OPTS
-              value: "-Xms{{ .Values.javaOpts.xms }} -Xmx{{ .Values.javaOpts.xmx }}{{- if .Values.javaOpts.sysArgs }} {{ .Values.javaOpts.sysArgs }}{{- end }}"
-            {{- end }}
+          {{- end }}
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
