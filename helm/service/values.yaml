@@ -79,3 +79,55 @@ springProfile: default
 env:
  OTEL_EXPORTER_OTLP_ENDPOINT: http://54.80.30.249:4317
  OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 8081
+
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+springProfile: default
+
+env:
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://54.80.30.249:4317
+  OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+
+initContainers:
+  - name: init-myapp
+    image: test
+    command: ["python", "init_script.py"]
+    env:
+      - name: INIT_ENV
+        value: "test"

@@ -25,6 +25,12 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+
+      {{- with .Values.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
       serviceAccountName: {{ include "orchestro-app.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
@@ -63,14 +69,14 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ .Values.secretName }}
-          {{- end }}     
+          {{- end }}
 
           env:
             {{- if .Values.springProfile }}
             - name: SPRING_PROFILES_ACTIVE
               value: "{{ .Values.springProfile }}"
             {{- end }}
-          
+            
             {{- if .Values.javaOpts }}
             - name: JAVA_OPTS
               value: "-Xms{{ .Values.javaOpts.xms }} -Xmx{{ .Values.javaOpts.xmx }}{{- if .Values.javaOpts.sysArgs }} {{ .Values.javaOpts.sysArgs }}{{- end }}"
