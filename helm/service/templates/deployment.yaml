@@ -73,10 +73,9 @@ spec:
           
             {{- if .Values.javaOpts }}
             - name: JAVA_OPTS
-              value: "-Xms{{ .Values.javaOpts.xms }} -Xmx{{ .Values.javaOpts.xmx }}{{- with .Values.javaOpts.sysArgs }} {{ . }}{{- end }}"
+              value: "-Xms{{ .Values.javaOpts.xms }} -Xmx{{ .Values.javaOpts.xmx }}"
             {{- end }}
 
-            
             {{- if .Values.env }}
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
@@ -96,3 +95,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+
