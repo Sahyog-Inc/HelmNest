@@ -73,8 +73,9 @@ spec:
           
             {{- if .Values.javaOpts }}
             - name: JAVA_OPTS
-              value: "-Xms{{ .Values.javaOpts.xms }} -Xmx{{ .Values.javaOpts.xmx }}{{- if .Values.javaOpts.sysArgs }} {{ .Values.javaOpts.sysArgs }}{{- end }}"
+              value: "-Xms{{ .Values.javaOpts.xms }} -Xmx{{ .Values.javaOpts.xmx }}{{- with .Values.javaOpts.sysArgs }} {{ . }}{{- end }}"
             {{- end }}
+
             
             {{- if .Values.env }}
             {{- range $key, $value := .Values.env }}
