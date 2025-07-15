@@ -79,3 +79,9 @@ springProfile: default
 env:
  OTEL_EXPORTER_OTLP_ENDPOINT: http://54.80.30.249:4317
  OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+
+
+managedCertificate:
+  enabled: false
+  name: gcp-orchestro-ai
+  domain: gcp.orchestro.ai
